@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'XKWebViewController_Example' do
+  pod 'XKWebViewController', :path => '../'
+
+  target 'XKWebViewController_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
