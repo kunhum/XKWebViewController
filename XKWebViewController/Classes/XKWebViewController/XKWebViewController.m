@@ -171,7 +171,7 @@
 #pragma mark -- web view delegate
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
-    if ([navigationAction.request.URL.absoluteString containsString:@"https"]) {
+    if (([navigationAction.request.URL.scheme isEqualToString:@"http"] || [navigationAction.request.URL.scheme isEqualToString:@"https"]) && navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
         decisionHandler(WKNavigationActionPolicyCancel);
     }
@@ -197,9 +197,24 @@
     
     if (!_webView) {
         
-        _webView = [[WKWebView alloc] initWithFrame:CGRectZero];
+        WKWebViewConfiguration *config = [WKWebViewConfiguration new];
+        //偏好设置
+        config.preferences = [WKPreferences new];
+        //最小字体
+        config.preferences.minimumFontSize = 14;
+        config.preferences.javaScriptEnabled = YES;
+        //不通过交互是否可以打开窗口
+        config.preferences.javaScriptCanOpenWindowsAutomatically = NO;
+        
+        //自适应js代码
+        NSString *js = @"var count = document.images.length;for (var i = 0; i < count; i++) {var image = document.images[i];image.style.width=320;};";
+        //根据JS字符串初始化WKUserScript对象
+        WKUserScript *script = [[WKUserScript alloc] initWithSource:js injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+        [config.userContentController addUserScript:script];
+        
+        _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
         _webView.navigationDelegate = self;
-//        _webView.UIDelegate = self;
+        
     }
     return _webView;
 }
