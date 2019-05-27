@@ -13,8 +13,15 @@
 #define XK_RATIO (XK_SCREEN_WIDTH/375.0)
 #define XK_SCREEN_WIDTH  [UIScreen mainScreen].bounds.size.width
 #define XK_SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
-#define XK_STATUS_BAR_AND_NAVIGATION_BAR_HEIGHT (XK_IS_IHPONEX ? 88.f : 64.f)
-#define XK_IS_IHPONEX (XK_SCREEN_WIDTH == 375.f && XK_SCREEN_HEIGHT == 812.f ? YES : NO)
+//判断iPhoneX、iPhoneXS
+#define XK_IS_IPHONE_X (CGSizeEqualToSize(CGSizeMake(1125, 2436), [UIScreen mainScreen].currentMode.size))
+//判断iPHoneXR
+#define XK_IS_IPHONE_XR (CGSizeEqualToSize(CGSizeMake(828, 1792), [UIScreen mainScreen].currentMode.size))
+//判断iPhoneXS Max
+#define XK_IS_IPHONE_XS_MAX (CGSizeEqualToSize(CGSizeMake(1242, 2688), [UIScreen mainScreen].currentMode.size))
+//判断iPhone X系列
+#define XK_IS_IPHONEX_SERIES (XK_IS_IPHONE_X || XK_IS_IPHONE_XR || XK_IS_IPHONE_XS_MAX)
+#define XK_STATUS_BAR_AND_NAVIGATION_BAR_HEIGHT (XK_IS_IPHONEX_SERIES ? 88.f : 64.f)
 
 @interface XKWebViewController () <WKNavigationDelegate>
 
@@ -84,7 +91,7 @@
     self.progressView.frame = frame;
     if (self.containScrollView) {
         [self.webView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view).with.mas_offset(64.0);
+            make.top.mas_equalTo(self.view).with.mas_offset(XK_STATUS_BAR_AND_NAVIGATION_BAR_HEIGHT);
         }];
     }
 }
@@ -162,7 +169,7 @@
             
             self.title = urlTitle;
             
-//            self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:17],NSForegroundColorAttributeName:[UIColor blackColor]};
+            //            self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:17],NSForegroundColorAttributeName:[UIColor blackColor]};
         }
     }
     
@@ -224,7 +231,7 @@
 - (UIProgressView *)progressView {
     
     if (!_progressView) {
-        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 64, 0, 1)];
+        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, XK_STATUS_BAR_AND_NAVIGATION_BAR_HEIGHT, 0, 1)];
         
         _progressView.progressTintColor = [UIColor colorWithRed:83/255.0 green:202/255.0 blue:195/255.0 alpha:1.0];
     }

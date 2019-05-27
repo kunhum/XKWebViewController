@@ -1,6 +1,6 @@
 PODS:
   - Masonry (1.1.0)
-  - XKWebViewController (1.0.1):
+  - XKWebViewController (1.0.2):
     - Masonry
 
 DEPENDENCIES:
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  XKWebViewController: 53ee27b3d1cbe5f0c5aa96d3daf07aa4516f759c
+  XKWebViewController: 77b58d9d470c0cc1bc3d3e754397649e4f248bc1
 
 PODFILE CHECKSUM: fd33cca4f42db84388943053df1caddfdd060455
 
